@@ -6055,7 +6055,11 @@ DS.RESTAdapter = DS.Adapter.extend({
     @returns String
   */
   buildURL: function(type, id) {
-    var url = "/" + this.pluralize(type.typeKey);
+
+    // BEN HACKED THIS namespace shizzle in!
+    var url = "/"
+    if( this.namespace ) url = url + this.namespace + "/";
+    url = url + this.pluralize(type.typeKey);
     if (id) { url += "/" + id; }
 
     return url;
