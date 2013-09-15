@@ -1,0 +1,7 @@
+<h2>Charts</h1>
+{{#linkTo 'charts.new'}}New Chart{{/linkTo}}
+<ul>
+{{#each}}
+  <li> {{#linkTo 'chart' this}}{{ title }}{{/linkTo}} </li>
+{{/each}}
+</ul>
