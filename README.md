@@ -20,21 +20,13 @@ The to run the server
 
     rackup
 
-Now visit: (http://0:9292/)[http://0:9292/]
+Now visit: [http://0:9292/](http://0:9292/)
 
 Tests
 -----
 
-You can see is the tests pass by visiting the (http://0:9292/test.html)[test.html] page in an up to date browser.
+You can see is the tests pass by visiting the [test.html](http://0:9292/test.html) page in an up to date browser.
 
 .. or you can run the specs for the Rack app, like so:
 
     bundle exec rspec
-
-    (http://0:9292/test.html)[Click here if running]
-
-.. or you can run the specs for the Rack app, like so:
-
-    bundle exec rspec
-
-
