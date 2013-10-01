@@ -1,0 +1,3 @@
+[submodule "DrowsyDromedary"]
+	path = DrowsyDromedary
+	url = https://github.com/zuk/DrowsyDromedary.git
