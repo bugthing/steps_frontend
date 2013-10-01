@@ -31,4 +31,10 @@ You can see is the tests pass by visiting the (http://0:9292/test.html)[test.htm
 
     bundle exec rspec
 
+    (http://0:9292/test.html)[Click here if running]
+
+.. or you can run the specs for the Rack app, like so:
+
+    bundle exec rspec
+
 
