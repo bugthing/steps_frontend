@@ -12,11 +12,13 @@ class ActiveMong
 
   def call(env)
 
-    (empty,db,coll,id) = env['PATH_INFO'].split('/')[1]
+    (empty,db,coll,id) = env['PATH_INFO'].split('/')
 
-    @mdb   = connection.db(db)            if db
-    @mcoll = @mdb.collection(coll)        if @mdb and coll
-    @mdoc  = @mcoll.find_one("_id" => id) if @mcoll and id
+    #puts "HAVE: #{env} == #{db} -- #{coll} -- #{id}"
+    
+    @mdb   = connection.db(db) if db
+    @mcoll = @mdb.collection(coll) if @mdb and coll
+    @mdoc  = @mcoll.find_one("_id" => BSON::ObjectId(id)) if @mcoll and id
 
     # call method that is based on request method
     method_name = "handle_#{env['REQUEST_METHOD'].downcase}".to_sym
@@ -33,15 +35,24 @@ class ActiveMong
   def handle_get
     if mdoc
       # show doc
+      #puts "DOC - SHOW - DOC: #{@mdoc}"
+      self.json = @mdoc.to_json
     elsif mcoll
       # list all docs
+      #puts "COLLECTION - LIST - DOCS: #{@mcoll.find}"
+      self.json = @mcoll.find.to_json
     elsif mdb
       # list all collections
+      colls = @mdb.collection_names
+      self.json = colls.to_json
     else
       # list all databases
-      dl = Returns::DatabaseList.new(connection.database_names)
-      puts "FUCK: #{dl}"
-      self.json = '[]'
+      dbs = connection.database_names
+      #dl = Returns::DatabaseList.new(dbs)
+      ##sz = dl.active_model_serializer.new(connection.database_names)
+      #puts "FUCK: #{dl.to_json}"
+      #puts "FUCK: #{connection.database_names.as_json}"
+      self.json = dbs.to_json
     end
   end
 
@@ -89,12 +100,20 @@ class ActiveMong
   class Returns
     class DatabaseList
       include ActiveModel::ArraySerializerSupport
-      def initialize(db_names)
-        #ActiveModel::ArraySerializer.new(db_names).as_json
+      attr_accessor :attributes
+      def initialize(attributes)
+        @attributes = attributes
+      end
+      def each
+        attributes.each
       end
     end
     class Database
       include ActiveModel::SerializerSupport
+      attr_accessor :attributes
+      def initialize(attributes)
+        @attributes = attributes
+      end
     end
   end
 end

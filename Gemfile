@@ -6,4 +6,7 @@ gem 'bson_ext'
 gem 'mongo'
 gem 'active_model_serializers'
 
-gem 'rspec'
+group :test do
+  gem 'rspec'
+  gem 'pry-debugger'
+end
