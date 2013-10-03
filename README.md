@@ -10,15 +10,16 @@ To run the app, open the index.html in an up to date browser.
 
 The app uses either Ember's Fixtures or it can speak to a REST backend.
 
-The plan is to build a very simple Rack and ActiveModelSerializer based backend.
+The plan is to build a very simple Rack based backend that can the bridge between ember-data and MongoDB.
 
 To get the required REST API up and running:
 
-    bundle install
+    $ echo "SOME HOW START MONGODB ON: localhost:27017"
+    $ bundle install
 
-The to run the server
+.. then to run the server
 
-    rackup
+    $ rackup
 
 Now visit: [http://0:9292/](http://0:9292/)
 
