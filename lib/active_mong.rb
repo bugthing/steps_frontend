@@ -1,5 +1,5 @@
 require 'mongo'
-require 'active_model_serializers'
+require 'json'
 
 class ActiveMong
 
@@ -12,10 +12,18 @@ class ActiveMong
 
   def call(env)
 
+    # TODO - there is a better way...
+    # parse any json body if we got some..
+    req  = Rack::Request.new(env)
+    body = req.body.read if req.body
+    if body and body.length >= 2
+      @json_body = JSON.parse(body)
+    end
+
     (empty,db,coll,id) = env['PATH_INFO'].split('/')
 
     #puts "HAVE: #{env} == #{db} -- #{coll} -- #{id}"
-    
+
     @mdb   = connection.db(db) if db
     @mcoll = @mdb.collection(coll) if @mdb and coll
     @mdoc  = @mcoll.find_one("_id" => BSON::ObjectId(id)) if @mcoll and id
@@ -24,44 +32,38 @@ class ActiveMong
     method_name = "handle_#{env['REQUEST_METHOD'].downcase}".to_sym
     public_send(method_name)
 
+    transform_id
+
     # respond a'la rack
     [
       (@response_code || 200),
       {"Content-Type" => "application/json" },
-      [ @json ]
+      [ JSON.pretty_generate(@json || {}) ]
     ]
   end
 
   def handle_get
     if mdoc
       # show doc
-      #puts "DOC - SHOW - DOC: #{@mdoc}"
-      self.json = @mdoc.to_json
+      set_json_for mdoc
     elsif mcoll
       # list all docs
-      #puts "COLLECTION - LIST - DOCS: #{@mcoll.find}"
-      self.json = @mcoll.find.to_json
+      self.json = { mcoll.name => mcoll.find.to_a}
     elsif mdb
-      # list all collections
-      colls = @mdb.collection_names
-      self.json = colls.to_json
+      colls = mdb.collection_names
+      self.json = { collections: colls }
     else
       # list all databases
-      dbs = connection.database_names
-      #dl = Returns::DatabaseList.new(dbs)
-      ##sz = dl.active_model_serializer.new(connection.database_names)
-      #puts "FUCK: #{dl.to_json}"
-      #puts "FUCK: #{connection.database_names.as_json}"
-      self.json = dbs.to_json
+      self.json = { databases: connection.database_names}
     end
   end
 
   def handle_post
     if mdoc
-      # NOTHING
       self.response_code = 406
     elsif mcoll
       # create a doc
+      #@mcoll.insert( @json_body )
     elsif mdb
       # create a collection
     else
@@ -73,13 +75,10 @@ class ActiveMong
     if mdoc
       # update the doc
     elsif mcoll
-      # NOTHING
       self.response_code = 406
     elsif mdb
-      # NOTHING
       self.response_code = 406
     else
-      # NOTHING
       self.response_code = 406
     end
   end
@@ -92,28 +91,27 @@ class ActiveMong
     elsif mdb
       # delete the database
     else
-      # NOTHING
       self.response_code = 406
     end
   end
 
-  class Returns
-    class DatabaseList
-      include ActiveModel::ArraySerializerSupport
-      attr_accessor :attributes
-      def initialize(attributes)
-        @attributes = attributes
-      end
-      def each
-        attributes.each
-      end
+  private
+
+  # re-keys '_id' to' id' & converts its value to a string
+  #  base on the fact @json conforms to '{ key => "Hash or Array" }'
+  def transform_id
+    objects = @json.values.first
+    objects = [ objects ] unless objects.is_a?(Array)
+    objects.map do |obj|
+     obj["id"] = obj.delete("_id").to_s if obj["_id"]
+     obj
     end
-    class Database
-      include ActiveModel::SerializerSupport
-      attr_accessor :attributes
-      def initialize(attributes)
-        @attributes = attributes
-      end
-    end
+  rescue NoMethodError => e
   end
+
+  def set_json_for( doc )
+    plural = mcoll.name.chop # rubbish!
+    self.json = { plural => doc }
+  end
+
 end
