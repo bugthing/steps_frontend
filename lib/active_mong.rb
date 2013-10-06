@@ -45,7 +45,7 @@ class ActiveMong
   def handle_get
     if mdoc
       # show doc
-      set_json_for mdoc
+      self.json = { singlar_collection => mdoc }
     elsif mcoll
       # list all docs
       self.json = { mcoll.name => mcoll.find.to_a}
@@ -63,7 +63,10 @@ class ActiveMong
       self.response_code = 406
     elsif mcoll
       # create a doc
-      #@mcoll.insert( @json_body )
+      @json_body = @json_body.delete(singlar_collection)
+      res_id = @mcoll.insert( @json_body )
+      @mdoc = @mcoll.find_one(res_id)
+      self.json = { singlar_collection => mdoc }
     elsif mdb
       # create a collection
     else
@@ -74,6 +77,10 @@ class ActiveMong
   def handle_put
     if mdoc
       # update the doc
+      @json_body = @json_body.delete(singlar_collection)
+      res = @mcoll.update(@mdoc, @json_body)
+      @mdoc = @mcoll.find_one(@mdoc['_id'])
+      self.json = { singlar_collection => mdoc } unless res['err']
     elsif mcoll
       self.response_code = 406
     elsif mdb
@@ -86,6 +93,8 @@ class ActiveMong
   def handle_delete
     if mdoc
       # delete the doc
+      res = @mcoll.remove(@mdoc)
+      self.json = { } unless res['err']
     elsif mcoll
       # delete the collection
     elsif mdb
@@ -102,16 +111,15 @@ class ActiveMong
   def transform_id
     objects = @json.values.first
     objects = [ objects ] unless objects.is_a?(Array)
-    objects.map do |obj|
+    ret = objects.map do |obj|
      obj["id"] = obj.delete("_id").to_s if obj["_id"]
      obj
     end
   rescue NoMethodError => e
   end
 
-  def set_json_for( doc )
-    plural = mcoll.name.chop # rubbish!
-    self.json = { plural => doc }
+  def singlar_collection
+    mcoll.name.chop # rubbish!
   end
 
 end
