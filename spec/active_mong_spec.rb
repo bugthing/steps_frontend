@@ -10,7 +10,7 @@ end
 describe ActiveMong do
 
   def app
-    #ActiveMong.new()
+    #ActiveMong.new() # for the real mongo!
     ActiveMong.new(fake_mongo)
   end
 
@@ -33,13 +33,6 @@ describe ActiveMong do
       it { should have_key("charts") }
     end
 
-    context "GET /steps/charts/ID" do
-      let(:path) { '/steps/charts/524c6f2d858e7b4de6f38ad9' }
-      it { should have_key("chart") }
-      its(["chart"]) { should have_key("id") }
-      its(["chart"]) { should_not have_key("_id") }
-    end
-
   end
 
   describe 'post' do
@@ -57,16 +50,26 @@ describe ActiveMong do
 
   context "with an existing document" do
 
-    # TODO: need fixtures for mongo .. but this will do for now..
+    # TODO: need fixtures for mongo .. but this will have to do for now..
     let(:fake_mdoc) { { "_id" => BSON::ObjectId("524c6f2d858e7b4de6f38ad9"), "title" => "Test Title2"} }
     before :each do
       post '/steps/charts', {"chart" => {"title" => "Existing Chart"}}.to_json, "CONTENT_TYPE" => "application/json"
       @existing_doc = JSON.parse(last_response.body) 
     end
+    let(:id) { @existing_doc['chart']['id'] }
+
+    context "get" do
+      before { get path  }
+      context "GET /steps/charts/ID" do
+        let(:path) { "/steps/charts/#{id}" }
+        it { should have_key("chart") }
+        its(["chart"]) { should have_key("id") }
+        its(["chart"]) { should_not have_key("_id") }
+      end
+    end
 
     describe 'update' do
       before { put path, args_hash.to_json, "CONTENT_TYPE" => "application/json" }
-      let(:id) { @existing_doc['chart']['id'] }
       context "PUT /steps/charts/ID" do
         let(:path) { '/steps/charts/' + id }
         let(:args_hash) do
@@ -81,7 +84,6 @@ describe ActiveMong do
 
     describe 'delete' do
       before { delete path, args_hash.to_json, "CONTENT_TYPE" => "application/json" }
-      let(:id) { @existing_doc['chart']['id'] }
       context "DELETE /steps/charts/ID" do
         let(:path) { '/steps/charts/' + id }
         let(:args_hash) do

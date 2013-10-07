@@ -26,7 +26,10 @@ class ActiveMong
 
     @mdb   = connection.db(db) if db
     @mcoll = @mdb.collection(coll) if @mdb and coll
-    @mdoc  = @mcoll.find_one("_id" => BSON::ObjectId(id)) if @mcoll and id
+    if @mcoll and id
+      @mdoc = @mcoll.find_one("_id" => BSON::ObjectId(id))
+      @mdoc
+    end
 
     # call method that is based on request method
     method_name = "handle_#{env['REQUEST_METHOD'].downcase}".to_sym
