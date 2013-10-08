@@ -1,3 +1,11 @@
-    <h1>{{title}}</h1>
+
+
+    {{#if isEditing}}
+      {{edit-chart class="edit" value=title focus-out="acceptChanges" insert-newline="acceptChanges"}}
+    {{else}}
+      <label {{action "editChart" on="doubleClick"}}>{{title}}</label>
+    {{/if}}
+
     {{#linkTo 'nodes'}}nodes{{/linkTo}}
+
     {{outlet}}

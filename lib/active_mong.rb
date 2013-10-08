@@ -24,6 +24,7 @@ class ActiveMong
 
     #puts "HAVE: #{env} == #{db} -- #{coll} -- #{id}"
 
+    (@mdb,@mcoll,@mdoc) = nil, nil,nil
     @mdb   = connection.db(db) if db
     @mcoll = @mdb.collection(coll) if @mdb and coll
     if @mcoll and id
