@@ -3,20 +3,24 @@ Steps.ChartsNewController =  Ember.ArrayController.extend({
   actions: {
     createChart: function () {
 
-      // Get the todo title set by the "New Todo" text field
+      // Get the title set by the "New Title" text field
       var title = this.get('newTitle');
       if (!title.trim()) { return; }
 
-      // Create the new Todo model
-      var todo = this.store.createRecord('chart', {
+      // Create the new Chart model
+      var chart = this.store.createRecord('chart', {
         title: title
       });
 
-      // Clear the "New Chary" text field
+      // Clear the "New Chart" text field
       this.set('newTitle', '');
 
       // Save the new model
-      todo.save();
+      chart.save();
+
+      // route to charts
+      this.transitionToRoute('charts');
+
     }
   }
 });
