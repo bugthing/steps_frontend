@@ -6,15 +6,44 @@
   <!-- Bootstrap from some CDN -->
   <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="css/steps-style.css">
 </head>
 <body>
+
   <script type="text/x-handlebars">
-    {{#link-to 'index'}}<img class="logo">Steps{{/link-to}}
-    <nav>
-      {{#link-to 'about'}}About{{/link-to}}
-      {{#link-to 'charts'}}Charts{{/link-to}}
-    </nav>
-    {{outlet}}
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          {{#link-to 'index' class="navbar-brand"}}Steps{{/link-to}}
+        </div>
+
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li>
+              {{#link-to 'about'}}About{{/link-to}}
+            </li>
+            <li>
+              {{#link-to 'charts'}}Charts{{/link-to}}
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="steps-content">
+        {{outlet}}
+      </div>
+    </div>
+
   </script>
 
   <script src="js/libs/jquery-1.10.2.min.js"></script>

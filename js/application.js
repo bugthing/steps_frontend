@@ -7,7 +7,7 @@ window.Steps = Ember.Application.create({
 
 // define what to use to get data into models...
 
-// Test Fixtures:
+//// Test Fixtures:
 //Steps.ApplicationAdapter = DS.FixtureAdapter.extend();
 
 // REST:

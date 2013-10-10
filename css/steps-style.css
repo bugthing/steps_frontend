@@ -1,0 +1,13 @@
+body {
+  padding-top: 50px;
+}
+.steps-content {
+  padding: 40px 15px;
+  text-align: center;
+}
+.panel-default-action {
+}
+.panel-default-action:hover {
+  background-color: #428BCA;
+  color: #FFFFFF;
+}

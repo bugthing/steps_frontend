@@ -1,4 +1,12 @@
 
-<h1>New Chart</h1>
+<div class="page-header">
+  <h2>New Chart</h2>
+</div>
 
-{{input class="new" id="newTitle" placeholder="Name of chart" value=newTitle focus-out="createChart" insert-newline="createCarte"}}
+<form role="form">
+  <div class="form-group">
+    <label for="newTitle">Chart Title</label>
+    {{input class="form-control" id="newTitle" placeholder="Name of chart" value=newTitle focus-out="createChart" insert-newline="createCarte"}}
+  </div>
+</div>
+

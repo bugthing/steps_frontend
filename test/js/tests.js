@@ -41,7 +41,7 @@ test("list charts -> select chart -> double click title to edit -> update on foc
     equal(find('a:contains("Chart One")').length, 1, "There should be a link to Chart One");
     return click('a:contains("Chart One")');
   }).then(function() {
-    equal(find('a:contains("nodes")').length, 1, "There should be a link to nodes");
+    equal(find('a:contains("Nodes")').length, 1, "There should be a link to nodes");
     equal(find('label:contains("Chart One")').length, 1, "It displays the title of the chart");
     return dblclick('label:contains("Chart One")')
   }).then(function() {
