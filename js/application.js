@@ -10,7 +10,7 @@ window.Steps = Ember.Application.create({
 // Test Fixtures:
 //Steps.ApplicationAdapter = DS.FixtureAdapter.extend();
 
-//// REST:
+// REST:
 Steps.ApplicationAdapter = DS.RESTAdapter.extend({
   namespace: 'steps' // database name to use for mongo api
 });

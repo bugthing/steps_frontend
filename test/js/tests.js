@@ -57,11 +57,11 @@ test("list charts -> select chart -> double click title to edit -> update on foc
 test("new chart -> enter title -> see new chart in list", function(){
   visit("/charts/new").then(function() {
     equal(find('input').length, 1, "There should be an input box");
-    return fillIn('input', "New Chart");
+    return fillIn('input', "My New Chart");
   }).then(function() {
-    return visit("/charts") // FIX - should not have to 'visit' as the controller calls 'transitionTo' >:\
+    return focusOut('input');
   }).then(function() {
-    equal(find('a:contains("New Chart")').length, 1, "It displays the title of the new chart");
+    equal(find('a:contains("My New Chart")').length, 1, "It displays the title of the new chart");
   })
 });
 
