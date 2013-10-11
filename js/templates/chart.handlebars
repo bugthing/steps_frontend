@@ -5,17 +5,11 @@
 
 <div class="panel panel-default">
   <div class="panel-body">
-
     {{#if isEditing}}
-      <form role="form">
-        <div class="form-group">
-          {{edit-chart class="form-control" value=title focus-out="acceptChanges" insert-newline="acceptChanges"}}
-        </div>
-      </form>
+      {{edit-chart class="form-control" value=title focus-out="acceptChanges" insert-newline="acceptChanges"}}
     {{else}}
       <label {{action "editChart" on="doubleClick"}}>{{title}}</label>
     {{/if}}
-
   </div>
 </div>
 
