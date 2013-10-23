@@ -1,2 +1,12 @@
-    <h2>{{title}}</h2>
-    {{#linkTo 'actions'}}actions{{/linkTo}}
+<h2>{{title}}</h2>
+
+{{#linkTo 'actions' this}}
+  <div class="panel panel-default panel-default-action">
+    <div class="panel-body">
+      Actions
+    </div>
+  </div>
+{{/linkTo}} 
+
+
+{{outlet}}

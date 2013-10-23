@@ -38,8 +38,14 @@ Steps.ChartRoute = Ember.Route.extend({
 
 Steps.NodesIndexRoute = Ember.Route.extend({
   model: function(params) {
-    console.log("GO!:");
-    return this.get('store').find('node');
+    var chart = this.modelFor("chart");
+    // currently failing attempt to query server.. like so:
+    //return this.get('store').find('node', { chart: chart.id } );
+    // .. sets up filter instead:
+    this.get('store').find('node');
+    return this.get('store').filter('node', function(record){ 
+      return record.get('chart') == chart
+    });
   }
 });
 
@@ -51,7 +57,11 @@ Steps.NodeRoute = Ember.Route.extend({
 
 Steps.ActionsIndexRoute = Ember.Route.extend({
   model: function() {
-    return this.get('store').find('action');
+    var node = this.modelFor("node");
+    this.get('store').find('action');
+    return this.get('store').filter('action', function(record){ 
+      return record.get('node') == node
+    });
   }
 });
 

@@ -35,6 +35,7 @@ MadeOfpaper = {
     this.require_template('node');
     this.require_template('actions/index');
     this.require_template('action');
+    this.require_template('actions/new');
   }
 };
 MadeOfpaper.load_templates();

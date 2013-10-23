@@ -8,6 +8,14 @@
   </div>
 {{/linkTo}}
 
-    {{#each}}
-      <li> {{#linkTo 'node' this}}{{ title }}{{/linkTo}} </li>
-    {{/each}}
+{{#each}}
+
+  {{#linkTo 'node' this}}
+    <div class="panel panel-default panel-default-action">
+      <div class="panel-body">
+        {{ title }}
+      </div>
+    </div>
+  {{/linkTo}} 
+
+{{/each}}

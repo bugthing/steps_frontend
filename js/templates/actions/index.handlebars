@@ -1,4 +1,19 @@
     <h3>Actions</h3>
-    {{#each}}
-      <li> {{#linkTo 'action' this}}{{ title }}{{/linkTo}} </li>
-    {{/each}}
+
+{{#linkTo 'actions.new'}}
+  <div class="panel panel-default panel-default-action">
+    <div class="panel-body">
+      New Action
+    </div>
+  </div>
+{{/linkTo}}
+
+{{#each}}
+  {{#linkTo 'action' this}}
+  <div class="panel panel-default panel-default-action">
+    <div class="panel-body">
+      {{ title }}
+    </div>
+  </div>
+  {{/linkTo}}
+{{/each}}

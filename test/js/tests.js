@@ -22,7 +22,20 @@ Steps.setupForTesting();
 Steps.injectTestHelpers();
 module("Integration Tests", {
   setup: function() {
-    Steps.ApplicationAdapter = DS.FixtureAdapter.extend(); // Apply test fixtures.
+    ////// Stub data store fixture adapter ///////
+    Steps.ApplicationAdapter = DS.FixtureAdapter.extend({
+      queryFixtures: function(fixtures, query, type) {
+        console.log('Fixture:' + query + '/' + type);
+        return fixtures.filter(function(item) {
+          for(prop in query) {
+            if( item[prop] != query[prop]) {
+              return false;
+            }
+          }
+          return true;
+        });
+      }
+    });
     Steps.reset();
   }
 });
@@ -66,7 +79,7 @@ test("new chart -> enter title -> see new chart in list", function(){
 });
 
 test("view chart -> list nodes -> new node -> fill in title -> see new node in list", function(){
-  visit("/charts/1").then(function() {
+  visit("/charts/c1").then(function() {
     equal(find('a:contains("Nodes")').length, 1, "There should be a link to Nodes list");
     return click('a:contains("Nodes")');
   }).then(function() {
@@ -78,6 +91,20 @@ test("view chart -> list nodes -> new node -> fill in title -> see new node in l
   }).then(function() {
     equal(find('a:contains("My New Node")').length, 1, "It displays the title of the new node");
   })
-
 });
 
+
+test("view node -> list actions -> new action -> fill in title -> see new action in list", function(){
+  visit("/charts/c1/nodes/n1").then(function() {
+    equal(find('a:contains("Actions")').length, 1, "There should be a link to Actions list");
+    return click('a:contains("Actions")');
+  }).then(function() {
+    return click('a:contains("New Action")');
+  }).then(function() {
+    return fillIn('input', "My New Action");
+  }).then(function() {
+    return focusOut('input');
+  }).then(function() {
+    equal(find('a:contains("My New Action")').length, 1, "It displays the title of the new action");
+  })
+});
