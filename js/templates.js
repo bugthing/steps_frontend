@@ -31,6 +31,7 @@ MadeOfpaper = {
     this.require_template('charts/new');
     this.require_template('chart');
     this.require_template('nodes/index');
+    this.require_template('nodes/new');
     this.require_template('node');
     this.require_template('actions/index');
     this.require_template('action');

@@ -65,3 +65,19 @@ test("new chart -> enter title -> see new chart in list", function(){
   })
 });
 
+test("view chart -> list nodes -> new node -> fill in title -> see new node in list", function(){
+  visit("/charts/1").then(function() {
+    equal(find('a:contains("Nodes")').length, 1, "There should be a link to Nodes list");
+    return click('a:contains("Nodes")');
+  }).then(function() {
+    return click('a:contains("New Node")');
+  }).then(function() {
+    return fillIn('input', "My New Node");
+  }).then(function() {
+    return focusOut('input');
+  }).then(function() {
+    equal(find('a:contains("My New Node")').length, 1, "It displays the title of the new node");
+  })
+
+});
+

@@ -1,4 +1,13 @@
     <h2>Nodes</h2>
+
+{{#linkTo 'nodes.new'}}
+  <div class="panel panel-default panel-default-action">
+    <div class="panel-body">
+      New Node
+    </div>
+  </div>
+{{/linkTo}}
+
     {{#each}}
       <li> {{#linkTo 'node' this}}{{ title }}{{/linkTo}} </li>
     {{/each}}
