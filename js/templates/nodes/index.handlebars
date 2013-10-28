@@ -1,4 +1,6 @@
-    <h2>Nodes</h2>
+<div class="page-header">
+  <h2>Nodes</h2>
+</div>
 
 {{#linkTo 'nodes.new'}}
   <div class="panel panel-default panel-default-action">
@@ -9,7 +11,6 @@
 {{/linkTo}}
 
 {{#each}}
-
   {{#linkTo 'node' this}}
     <div class="panel panel-default panel-default-action">
       <div class="panel-body">
@@ -17,5 +18,4 @@
       </div>
     </div>
   {{/linkTo}} 
-
 {{/each}}

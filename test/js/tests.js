@@ -95,7 +95,7 @@ test("view chart -> list nodes -> new node -> fill in title -> see new node in l
 
 
 test("view node -> list actions -> new action -> fill in title -> see new action in list", function(){
-  visit("/charts/c1/nodes/n1").then(function() {
+  visit("/nodes/n1").then(function() {
     equal(find('a:contains("Actions")').length, 1, "There should be a link to Actions list");
     return click('a:contains("Actions")');
   }).then(function() {

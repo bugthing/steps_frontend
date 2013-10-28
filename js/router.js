@@ -1,22 +1,32 @@
 
 Steps.Router.map(function() {
   this.route("about");
-  this.resource('charts', function() {
-    this.route("new");
-    this.resource("chart", {path: "/:chart_id"}, function() {
-      this.resource('nodes', function() {
-        this.route("new");
-        this.resource('node', { path: '/:node_id' }, function() {
-          this.resource('actions', function() {
-            this.route("new");
-            this.resource('action', { path: '/:action_id' }, function() {
-            });
-          });
-        });
-      });
-    });
-  });
+  this.resource('charts',  function() { this.route("new"); });
+  this.resource('chart',   { 'path' : 'charts/:chart_id' });
+  this.resource('nodes',   function() { this.route("new"); });
+  this.resource('node',    { 'path' : 'nodes/:node_id' });
+  this.resource('actions', { 'path' : ':node_id' },  function() { this.route("new"); });
+  this.resource('action',  { 'path' : 'actions/:action_id' });
 });
+
+//Steps.Router.map(function() {
+//  this.route("about");
+//  this.resource('charts', function() {
+//    this.route("new");
+//    this.resource("chart", {path: "/:chart_id"}, function() {
+//      this.resource('nodes', function() {
+//        this.route("new");
+//        this.resource('node', { path: '/:node_id' }, function() {
+//          this.resource('actions', function() {
+//            this.route("new");
+//            this.resource('action', { path: '/:action_id' }, function() {
+//            });
+//          });
+//        });
+//      });
+//    });
+//  });
+//});
 
 Steps.IndexRoute = Ember.Route.extend({
   setupController: function(controller) {
