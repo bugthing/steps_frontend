@@ -12,13 +12,16 @@ class ActiveMong
 
   def call(env)
 
-    req  = Rack::Request.new(env)
+    # TODO - clean this bit of env processing up..
+    req = Rack::Request.new(env)
     # define a filter if got some params.
+    @filter = nil
     if req.params.keys.count > 0
       @filter = req.params
     end
     # parse any json body if we got some.
     body = req.body.read if req.body
+    @json_body = nil
     if body and body.length >= 2
       @json_body = JSON.parse(body)
     end
