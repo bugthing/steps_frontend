@@ -12,9 +12,12 @@ class ActiveMong
 
   def call(env)
 
-    # TODO - there is a better way...
-    # parse any json body if we got some..
     req  = Rack::Request.new(env)
+    # define a filter if got some params.
+    if req.params.keys.count > 0
+      @filter = req.params
+    end
+    # parse any json body if we got some.
     body = req.body.read if req.body
     if body and body.length >= 2
       @json_body = JSON.parse(body)
@@ -52,7 +55,7 @@ class ActiveMong
       self.json = { singlar_collection => mdoc }
     elsif mcoll
       # list all docs
-      self.json = { mcoll.name => mcoll.find.to_a}
+      self.json = { mcoll.name => mcoll.find(@filter).to_a}
     elsif mdb
       colls = mdb.collection_names
       self.json = { collections: colls }

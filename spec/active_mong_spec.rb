@@ -17,7 +17,10 @@ describe ActiveMong do
   subject { JSON.parse(last_response.body) }
 
   describe 'get' do
-    before { get path  }
+    before { get path, params  }
+
+    let(:params) { {} }
+
     context "GET /" do
       let(:path) { '/' }
       it { should have_key("databases") }
@@ -31,6 +34,12 @@ describe ActiveMong do
     context "GET /steps/charts" do
       let(:path) { '/steps/charts' }
       it { should have_key("charts") }
+      context "and sending filter via query string" do
+        let(:params) { {title: 'NeverFindMe'}  }
+        it "should have an empty array" do
+          subject['charts'].count.should == 0
+        end
+      end
     end
 
   end
@@ -99,7 +108,13 @@ describe ActiveMong do
   let(:fake_mongo) { double db: fake_mdb, database_names: fake_database_list }
   let(:fake_mdb) { double collection: fake_mcoll, collection_names: fake_collection_list }
   let(:fake_mdoc_cursor) { double to_a: [ fake_mdoc ] }
-  let(:fake_mcoll) { double name: 'charts', find_one: fake_mdoc, find: fake_mdoc_cursor, insert: fake_mdoc_inserted, update: fake_mdoc_updated, remove: fake_mdoc_removed }
+  let(:fake_filtered_mdoc_cursor) { double to_a: [] }
+  let(:fake_mcoll) { 
+    d = double name: 'charts', find_one: fake_mdoc, find: fake_mdoc_cursor, insert: fake_mdoc_inserted, update: fake_mdoc_updated, remove: fake_mdoc_removed 
+    allow(d).to receive(:find).and_return(fake_mdoc_cursor)
+    allow(d).to receive(:find).with(kind_of(Hash)).and_return(fake_filtered_mdoc_cursor)
+    d
+  }
 
   let(:fake_database_list) { %w|steps db2| }
   let(:fake_collection_list) { %w|charts nodes actions| }
