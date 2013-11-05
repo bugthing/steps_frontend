@@ -15,5 +15,9 @@ wget -N -P js/libs/ http://emberjs.com.s3.amazonaws.com/getting-started/ember-da
 wget -N -P test/js/libs/ http://code.jquery.com/qunit/qunit-1.12.0.js
 wget -N -P test/css/ http://code.jquery.com/qunit/qunit-1.12.0.css
 
+echo "Ensure you get and build jsPlumb from: https://github.com/sporritt/jsPlumb.git"
+echo "  Build with: bower install jsPlumb"
+echo "  Then copy '<GIT DIR>/dist/js/jquery.jsPlumb-1.5.3.js' to '<THIS DIR>/js/libs/jquery.jsPlumb-1.5.3.js'"
+
 echo "Done"
 
