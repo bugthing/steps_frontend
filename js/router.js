@@ -23,13 +23,23 @@ Steps.ChartsIndexRoute = Ember.Route.extend({
 
 Steps.ChartRoute = Ember.Route.extend({
   model: function(params) {
+    this.get('store').find('node', { chart: params.chart_id } )
     return this.get('store').find('chart', params.chart_id);
   },
   afterModel: function(chart, transition) {
     // TODO - make this work!
-    // as per following url, perhaps you can load other related model parts here:
-    //   http://discuss.emberjs.com/t/whats-the-best-way-to-decorate-an-existing-model-in-ember-js-with-additional-data-from-an-external-api/3239/2
-    return this.get('store').find('node', { chart: chart.id } )
+    var store = this.get('store'),
+        chartId = chart.get('id');
+
+    var promises = [
+      store.find('node', {chart: chartId }).then(function(nodes) {
+        nodes.forEach( function(node, index, enumerable) {
+          // perhaps here I add this to chart.nodes?!
+        });
+      })
+    ]
+
+    return Ember.RSVP.all(promises);
   }
 });
 

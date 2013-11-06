@@ -11,7 +11,6 @@ wget -N -P js/libs/ http://code.jquery.com/jquery-1.10.2.min.js
 wget -N -P js/libs/ http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-1.0.0.js
 wget -N -P js/libs/ http://builds.emberjs.com/tags/v1.0.0/ember.js
 wget -N -P js/libs/ http://builds.emberjs.com/tags/v1.0.0-beta.3/ember-data.js
-#wget -N -P js/libs/ http://rsvpjs-builds.s3.amazonaws.com/rsvp-latest.js
 
 wget -N -P test/js/libs/ http://code.jquery.com/qunit/qunit-1.12.0.js
 wget -N -P test/css/ http://code.jquery.com/qunit/qunit-1.12.0.css

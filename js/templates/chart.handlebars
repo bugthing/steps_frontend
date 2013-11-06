@@ -3,7 +3,11 @@
   <h2>Chart</h2>
 </div>
 
-NODES:{{nodes.length}}
+NODES: {{nodes}}
+
+{{#each nodes}}
+  <p>Node: {{title}}</p>
+{{/each}}
 
 <div class="panel panel-default">
   <div class="panel-body">
