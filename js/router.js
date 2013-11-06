@@ -27,19 +27,29 @@ Steps.ChartRoute = Ember.Route.extend({
     return this.get('store').find('chart', params.chart_id);
   },
   afterModel: function(chart, transition) {
-    // TODO - make this work!
-    var store = this.get('store'),
+
+    // Now we have loaded the chart, lets load all its nodes and their actions..
+
+    var store   = this.get('store'),
         chartId = chart.get('id');
 
-    var promises = [
-      store.find('node', {chart: chartId }).then(function(nodes) {
-        nodes.forEach( function(node, index, enumerable) {
-          // perhaps here I add this to chart.nodes?!
-        });
-      })
-    ]
+    // return promise that is done when found all this charts nodes..
+    return store.find('node', {chart: chartId }).then(function(nodes) {
 
-    return Ember.RSVP.all(promises);
+      // run through each node, adding it to the chart.nodes and creating an RSVP list of promises to get it's actions..
+      var promises = []
+      nodes.forEach(function(node, index, enumerable) {
+        chart.get('nodes').pushObject(node);
+
+        promises.push( store.find('action', { node: node.get('id') }).then(function(actions) {
+          // .. run through each action adding to the node.actions..
+          actions.forEach( function(action, index2, enumerable2) {
+            node.get('actions').pushObject(action);
+          });
+        }));
+      });
+      return Ember.RSVP.all(promises); 
+    })
   }
 });
 

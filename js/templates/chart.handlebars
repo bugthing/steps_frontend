@@ -7,6 +7,10 @@ NODES: {{nodes}}
 
 {{#each nodes}}
   <p>Node: {{title}}</p>
+  {{#each actions}}
+    <p>Action: {{title}}</p>
+  {{/each}}
+
 {{/each}}
 
 <div class="panel panel-default">
