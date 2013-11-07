@@ -8,6 +8,7 @@ mkdir -p ./test/js/libs
 mkdir -p ./test/css
 
 wget -N -P js/libs/ http://code.jquery.com/jquery-1.10.2.min.js
+wget -N -P js/libs/ http://code.jquery.com/ui/1.10.3/jquery-ui.js
 wget -N -P js/libs/ http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-1.0.0.js
 wget -N -P js/libs/ http://builds.emberjs.com/tags/v1.0.0/ember.js
 wget -N -P js/libs/ http://builds.emberjs.com/tags/v1.0.0-beta.3/ember-data.js

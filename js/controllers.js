@@ -38,7 +38,6 @@ Steps.ChartController =  Ember.ObjectController.extend({
   }
 });
 
-
 Steps.NodesNewController =  Ember.ArrayController.extend({
   needs: "chart",
   chart: Ember.computed.alias("controllers.chart"),

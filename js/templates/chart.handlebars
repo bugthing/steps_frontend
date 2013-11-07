@@ -3,15 +3,18 @@
   <h2>Chart</h2>
 </div>
 
-NODES: {{nodes}}
+<div class="chart-container">
 
-{{#each nodes}}
-  <p>Node: {{title}}</p>
-  {{#each actions}}
-    <p>Action: {{title}}</p>
-  {{/each}}
+{{collection Steps.ChartNodesView contentBinding="nodes"}}
 
+{{#each node in nodes}}
+    {{#each action in node.actions}}
+      {{#view Steps.ChartActionView actionBinding="action"}}
+        {{action.title}}
+      {{/view}}
+    {{/each}}
 {{/each}}
+</div>
 
 <div class="panel panel-default">
   <div class="panel-body">
@@ -30,4 +33,5 @@ NODES: {{nodes}}
     </div>
   </div>
 {{/linkTo}}
+
 
