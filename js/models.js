@@ -18,6 +18,10 @@ Steps.Tool = DS.Model.extend({
   title: DS.attr('string'),
   actions: DS.hasMany('action')
 });
+// .. random little normal model used for chart graph
+Steps.Edge = Ember.Object.extend({
+  nodeId: ""
+});
 
 
 // TOOLS
