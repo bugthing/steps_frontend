@@ -1,14 +1,10 @@
 
-Steps.ChartView = Ember.View.extend({
-});
-
 Steps.ChartNodeView = Ember.View.extend({
-  template: Ember.Handlebars.compile('<div>{{view.content.title}}</div>'),
+  templateName: 'chart_node',
   classNameBindings: ['chartNodeClass'],
   chartNodeClass: function() {
     return 'chart-node btn chart-node-' + this.get('content.id');
   }.property()
-
   , didInsertElement: function() {
 
     // TODO: get id to be dynamic (content.id)
@@ -17,7 +13,7 @@ Steps.ChartNodeView = Ember.View.extend({
     this.$().attr('id', this.get('content.id'));
 
     // TODO: make chart link up better than this!
-    //  Add to parentView's list of edge objects..
+    //  Add to parentView list of edge objects..
     var edgeList = this.get('parentView.renderedNodes');
     edgeList.push(Steps.Edge.create({ nodeId: this.get('content.id') }));
     // .. run through list of all edges, redrawing..
@@ -42,12 +38,18 @@ Steps.ChartNodesView = Ember.CollectionView.extend({
 })
 
 Steps.ChartActionView = Ember.View.extend({
-  action: Ember.required(), // set via binding in chart template
+  templateName: 'chart_action',
   classNameBindings: ['chartActionClass'],
   chartActionClass: function() {
     return 'chart-action btn';
   }.property('action')
 });
+
+Steps.ChartActionsView = Ember.CollectionView.extend({
+  classNames: ['chart-actions'],
+  itemViewClass: Steps.ChartActionView.extend(),
+  renderedActions: []
+})
 
 Steps.EditChartView = Ember.TextField.extend({
   didInsertElement: function () {
@@ -56,4 +58,27 @@ Steps.EditChartView = Ember.TextField.extend({
 });
 Ember.Handlebars.helper('edit-chart', Steps.EditChartView);
 
+Steps.NothingView = Ember.View.extend({
+  template: Ember.Handlebars.compile('')
+});
 
+
+// modal views..
+Steps.ModalView = Ember.Mixin.create({
+  layoutName: 'modal_layout',
+  didInsertElement: function() {
+    this.$('.modal').modal('show')
+    view = this
+    this.$('.modal').on("hidden.bs.modal", function(ev) {
+      view.controller.send('closeModal')
+      return
+    });
+  },
+  actions: {
+    closeModal: function() {
+      this.$('.modal').modal('hide');
+    }
+  }
+});
+
+Steps.ChartNodeEditView = Ember.View.extend(Steps.ModalView, { });

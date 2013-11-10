@@ -4,16 +4,7 @@
 </div>
 
 <div class="chart-container">
-
-{{collection Steps.ChartNodesView contentBinding="nodes"}}
-
-{{#each node in nodes}}
-    {{#each action in node.actions}}
-      {{#view Steps.ChartActionView actionBinding="action"}}
-        {{action.title}}
-      {{/view}}
-    {{/each}}
-{{/each}}
+  {{collection Steps.ChartNodesView contentBinding="nodes"}}
 </div>
 
 <div class="panel panel-default">
@@ -34,4 +25,4 @@
   </div>
 {{/linkTo}}
 
-
+{{outlet}}

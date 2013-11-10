@@ -1,0 +1,25 @@
+<div class="modal fade" role="dialog">
+
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" {{action closeModal target="view"}}>&times;</button>
+      <h3 class="modal-title"> 
+
+Modal
+
+      </h3>
+    </div>
+    <div class="modal-body">
+
+{{yield}}
+
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn btn-default" {{action closeModal target="view"}}>Close</a>
+      <a href="#" class="btn btn-primary" {{action saveModal target="view"}}>Send</a>
+    </div>
+  </div>
+</div>
+
+<div>

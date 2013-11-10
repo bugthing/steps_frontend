@@ -9,6 +9,25 @@ Steps.Router.map(function() {
   this.resource('action',  { 'path' : 'actions/:action_id' });
 });
 
+//Steps.Router.map(function() {
+//  this.route("about");
+//  this.resource('charts', function() {
+//    this.route("new");
+//    this.resource("chart", {path: "/:chart_id"}, function() {
+//      this.resource('nodes', function() {
+//        this.route("new");
+//        this.resource('node', { path: '/:node_id' }, function() {
+//          this.resource('actions', function() {
+//            this.route("new");
+//            this.resource('action', { path: '/:action_id' }, function() {
+//            });
+//          });
+//        });
+//      });
+//    });
+//  });
+//});
+
 Steps.IndexRoute = Ember.Route.extend({
   setupController: function(controller) {
     console.log("GO!");
@@ -26,9 +45,7 @@ Steps.ChartRoute = Ember.Route.extend({
     this.get('store').find('node', { chart: params.chart_id } )
     return this.get('store').find('chart', params.chart_id);
   },
-  afterModel: function(chart, transition) {
-
-    // Now we have loaded the chart, lets load all its nodes and their actions..
+  afterModel: function(chart, transition) { // Now we have loaded the chart, lets load all its nodes and their actions:
 
     var store   = this.get('store'),
         chartId = chart.get('id');
@@ -50,6 +67,18 @@ Steps.ChartRoute = Ember.Route.extend({
       });
       return Ember.RSVP.all(promises); 
     })
+  },
+  actions: {
+    closeModal: function() {
+      this.render('nothing', { into: 'application', outlet: 'modal' });
+    },
+    saveModal: function() {
+    },
+    nodeDblClick: function() {
+      this.render('chart_node_edit', { into: 'application', outlet: 'modal' });
+    },
+    actionDblClick: function() {
+    }
   }
 });
 
