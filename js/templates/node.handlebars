@@ -1,5 +1,10 @@
+
 <div class="page-header">
-  <h2>{{title}}</h2>
+    {{#if isEditing}}
+      {{edit-chart class="form-control" value=title focus-out="acceptChanges" insert-newline="acceptChanges"}}
+    {{else}}
+      <h2 {{action "editNode" on="doubleClick"}}>{{title}}</h2>
+    {{/if}}
 </div>
 
 {{#linkTo 'actions' this}}
@@ -9,3 +14,4 @@
     </div>
   </div>
 {{/linkTo}} 
+

@@ -1,4 +1,11 @@
-<span {{action "nodeDblClick" on="doubleClick"}}>
-  {{view.content.title}} 
-  {{collection Steps.ChartActionsView contentBinding="view.content.actions"}} 
+
+
+<span>
+
+  {{#linkTo "node" this}}
+    {{title}} 
+  {{/linkTo}}
+
+  {{collection Steps.ChartActionsView contentBinding="actions"}} 
+
 </span>

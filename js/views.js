@@ -62,7 +62,6 @@ Steps.NothingView = Ember.View.extend({
   template: Ember.Handlebars.compile('')
 });
 
-
 // modal views..
 Steps.ModalView = Ember.Mixin.create({
   layoutName: 'modal_layout',
@@ -70,7 +69,7 @@ Steps.ModalView = Ember.Mixin.create({
     this.$('.modal').modal('show')
     view = this
     this.$('.modal').on("hidden.bs.modal", function(ev) {
-      view.controller.send('closeModal')
+      view.controller.send('closeModal') // important! - removes the rendered view.
       return
     });
   },
@@ -82,3 +81,5 @@ Steps.ModalView = Ember.Mixin.create({
 });
 
 Steps.ChartNodeEditView = Ember.View.extend(Steps.ModalView, { });
+Steps.NodeView = Ember.View.extend(Steps.ModalView, { });
+Steps.ActionView = Ember.View.extend(Steps.ModalView, { });

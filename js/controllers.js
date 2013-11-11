@@ -79,6 +79,9 @@ Steps.NodeController =  Ember.ObjectController.extend({
     acceptChanges: function () {
       this.set('isEditing', false);
       this.get('model').save();
+    },
+    closeModal: function () {
+      this.transitionToRoute('chart');
     }
   }
 });
