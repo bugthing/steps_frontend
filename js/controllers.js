@@ -35,7 +35,32 @@ Steps.ChartController =  Ember.ObjectController.extend({
       this.set('isEditing', false);
       this.get('model').save();
     }
-  }
+  },
+  shouldRedraw: function() { return false; }.property(),
+  drawChart: function(){
+    console.log('controller drawChart:' + this.get('model.nodes.length'));
+    //var store   = this.get('model.store'),
+    //    chartId = this.get('model.id');
+
+    //// return promise that is done when found all this charts nodes..
+    //thing = store.find('node', {chart: chartId }).then(function(nodes) {
+
+    //  // run through each node, adding it to the chart.nodes and creating an RSVP list of promises to get it's actions..
+    //  var promises = []
+    //  nodes.forEach(function(node, index, enumerable) {
+    //    chart.get('nodes').pushObject(node);
+
+    //    promises.push( store.find('action', { node: node.get('id') }).then(function(actions) {
+    //      // .. run through each action adding to the node.actions..
+    //      actions.forEach( function(action, index2, enumerable2) {
+    //        node.get('actions').pushObject(action);
+    //      });
+    //    }));
+    //  });
+    //  return Ember.RSVP.all(promises); 
+    //})
+    this.set('shouldRedraw', true); // rely on view to true the back to false when drawn
+  }.observes('model')
 });
 
 Steps.NodesNewController =  Ember.ArrayController.extend({

@@ -26,31 +26,31 @@ Steps.ChartsIndexRoute = Ember.Route.extend({
 
 Steps.ChartRoute = Ember.Route.extend({
   model: function(params) {
-    this.get('store').find('node', { chart: params.chart_id } )
-    return this.get('store').find('chart', params.chart_id);
-  },
-  afterModel: function(chart, transition) { // Now we have loaded the chart, lets load all its nodes and their actions:
+    var store   = this.get('store');
+    var chartController = this.controllerFor('chart');
+    var chartId = params.chart_id;
 
-    var store   = this.get('store'),
-        chartId = chart.get('id');
+    return this.get('store').find('chart', chartId).then(function(chart){
 
-    // return promise that is done when found all this charts nodes..
-    return store.find('node', {chart: chartId }).then(function(nodes) {
+      // return promise that is done when found all this charts nodes..
+      return store.find('node', {chart: chartId }).then(function(nodes) {
 
-      // run through each node, adding it to the chart.nodes and creating an RSVP list of promises to get it's actions..
-      var promises = []
-      nodes.forEach(function(node, index, enumerable) {
-        chart.get('nodes').pushObject(node);
+        //// run through each node, adding it to the chart.nodes and creating an RSVP list of promises to get it's actions..
+        var promises = []
+        nodes.forEach(function(node, index, enumerable) {
+          chart.get('nodes').pushObject(node);
 
-        promises.push( store.find('action', { node: node.get('id') }).then(function(actions) {
-          // .. run through each action adding to the node.actions..
-          actions.forEach( function(action, index2, enumerable2) {
-            node.get('actions').pushObject(action);
-          });
-        }));
-      });
-      return Ember.RSVP.all(promises); 
-    })
+        // Actions are done here!
+          promises.push( store.find('action', { node: node.get('id') }).then(function(actions) {
+            // .. run through each action adding to the node.actions..
+            actions.forEach( function(action, index2, enumerable2) {
+              node.get('actions').pushObject(action);
+            });
+          }));
+        });
+        return Ember.RSVP.all(promises);
+      }).then(function() { return chart; } );
+    });
   },
   actions: {
     closeModal: function() {
@@ -69,6 +69,9 @@ Steps.NodesIndexRoute = Ember.Route.extend({
 Steps.NodeRoute = Ember.Route.extend({
   model: function(params) {
     return this.get('store').find('node', params.node_id);
+  },
+  deactivate: function() {
+    this.controllerFor('chart').drawChart();
   }
 });
 
@@ -82,5 +85,8 @@ Steps.ActionsIndexRoute = Ember.Route.extend({
 Steps.ActionRoute = Ember.Route.extend({
   model: function(params) {
     return this.get('store').find('action', params.action_id);
+  },
+  deactivate: function() {
+    this.controllerFor('chart').drawChart();
   }
 });
